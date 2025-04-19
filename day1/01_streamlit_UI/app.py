@@ -30,20 +30,29 @@ st.sidebar.info("コードのコメントを解除して、Streamlitのさまざ
 # ============================================
 st.header("基本的なUI要素")
 
+# タイトル
+st.title("インタラクティブデモ")
+
 # テキスト入力
-st.subheader("テキスト入力")
-name = st.text_input("あなたの名前", "ゲスト")
-st.write(f"こんにちは、{name}さん！")
+st.subheader("📝 あなたの名前を教えてください")
+name = st.text_input("名前を入力してください", placeholder="例：山田太郎")
+
+# あいさつの表示
+if name:
+    st.write(f"こんにちは、{name}さん！")
+else:
+    st.write("こんにちは、ゲストさん！")
 
 # ボタン
-# st.subheader("ボタン")
-# if st.button("クリックしてください"):
-#     st.success("ボタンがクリックされました！")
+st.subheader("🔘 アクションボタン")
+if st.button("クリックして挨拶を表示"):
+    st.success("ボタンがクリックされました！")
 
 # チェックボックス
-# st.subheader("チェックボックス")
-# if st.checkbox("チェックを入れると追加コンテンツが表示されます"):
-#     st.info("これは隠れたコンテンツです！")
+st.subheader("☑️ オプション表示")
+if st.checkbox("チェックを入れると秘密のメッセージが出現します"):
+    st.info("🎉 これは隠された特別なコンテンツです！")
+
 
 # スライダー
 # st.subheader("スライダー")
