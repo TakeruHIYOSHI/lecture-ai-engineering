@@ -11,6 +11,7 @@ import pickle
 import time
 import great_expectations as gx
 
+
 class DataLoader:
     """データロードを行うクラス"""
 
@@ -246,6 +247,24 @@ def test_model_performance():
     assert (
         metrics["inference_time"] < 1.0
     ), f"推論時間が長すぎます: {metrics['inference_time']}秒"
+
+    # 過去バージョンのモデルとの比較
+    baseline_model_path = "models/baseline_titanic_model.pkl"
+    if os.path.exists(baseline_model_path):
+        with open(baseline_model_path, "rb") as f:
+            baseline_model = pickle.load(f)
+        baseline_predictions = baseline_model.predict(X_test)
+        baseline_accuracy = accuracy_score(y_test, baseline_predictions)
+        
+        # 現在のモデルが過去バージョンより性能が劣化していないことを確認
+        assert metrics["accuracy"] >= baseline_accuracy * 0.95, \
+            f"モデルの性能が過去バージョンより5%以上劣化しています: " \
+            f"現在の精度={metrics['accuracy']:.4f}, 過去の精度={baseline_accuracy:.4f}"
+    
+    # 現在のモデルをベースラインとして保存
+    os.makedirs("models", exist_ok=True)
+    with open(baseline_model_path, "wb") as f:
+        pickle.dump(model, f)
 
 
 if __name__ == "__main__":
